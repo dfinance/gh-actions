@@ -37,8 +37,8 @@ jobs:
       run: |
         export BRANCH=$(sed -e 's/refs\/tags\///g; s/refs\/heads\///g;' <<< ${GITHUB_REF})
         export REPOSITORY_NAME=${GITHUB_REPOSITORY##*/}
-        export CONTAINER_FULLNAME=${{ secrets.DOCKERHUB_USER }}/${REPOSITORY_NAME}
+        export REGISTRY=dfinance/${REPOSITORY_NAME}
 
         docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-        docker build -f ./.build/Dockerfile -t ${CONTAINER_FULLNAME}:${BRANCH} .
+        docker build -f ./.build/Dockerfile -t ${REGISTRY}:${BRANCH} .
         docker push ${CONTAINER_FULLNAME}:${CONTAINER_TAG}
