@@ -4,11 +4,12 @@ name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request 
 # events but only for the master branch
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
+# on:
+#   push:
+#     branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -32,5 +33,12 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
 
-    - name: Check docker
-      run: docker version
+    - name: Build and push docker image
+      run: |
+        export BRANCH=$(sed -e 's/refs\/tags\///g; s/refs\/heads\///g;' <<< ${GITHUB_REF})
+        export REPOSITORY_NAME=${GITHUB_REPOSITORY##*/}
+        export CONTAINER_FULLNAME=${DOCKERHUB_USER}/${REPOSITORY_NAME}
+
+        docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWORD}
+        docker build -f ./.build/Dockerfile -t ${CONTAINER_FULLNAME}:${BRANCH} .
+        docker push ${CONTAINER_FULLNAME}:${CONTAINER_TAG}
