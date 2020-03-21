@@ -11,6 +11,8 @@ set -e
 # INPUT_DOCKERFILE
 # INPUT_BUILD_PARAMS
 # INPUT_CACHE
+# INPUT_DEBUG
+# INPUT_DOCKER_CONTEXT
 
 function iprintf {
   echo -e "\033[0;32m$(date +"%Y.%m.%d %H:%M:%S")\t$@\033[0m"
@@ -20,7 +22,7 @@ function eprintf {
   exit 1
 }
 
-
+INPUT_DOCKER_CONTEXT=${INPUT_DOCKER_CONTEXT:-.}
 [[ -z "${INPUT_NAME}" ]]      && eprintf "Unable to find the repository name. Did you set with.name?"
 [[ -z "${INPUT_USERNAME}" ]]  && eprintf "Unable to find the username. Did you set with.username?"
 [[ -z "${INPUT_PASSWORD}" ]]  && eprintf "Unable to find the password. Did you set with.password?"
@@ -47,7 +49,7 @@ fi
 iprintf "Docker login"
 docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY} <<< ${INPUT_PASSWORD}
 
-set -x
+[[ "${INPUT_DEBUG}" == 'true' ]] && set -x
 if [ ! -z "${INPUT_CACHE}" ]; then
   iprintf "Pull docker cache: ${_docker_name}"
   docker pull ${_docker_name}
@@ -55,7 +57,7 @@ if [ ! -z "${INPUT_CACHE}" ]; then
 fi
 
 iprintf "Start docker build"
-docker build ${_build_params} -t ${_docker_name} .
+docker build ${_build_params} -t ${_docker_name} ${INPUT_DOCKER_CONTEXT}
 
 iprintf "Push docker image: ${_docker_name}"
 docker push ${_docker_name}
@@ -64,7 +66,7 @@ if [[ "${_isMaster}" == "true" || "${_isTag}" == "true" ]]; then
   iprintf "Push docker image: ${INPUT_NAME}:latest"
   docker push ${INPUT_NAME}:latest
 fi
-set +x
+[[ "${INPUT_DEBUG}" == 'true' ]] && set +x
 
 iprintf "Docker logout"
 docker logout
