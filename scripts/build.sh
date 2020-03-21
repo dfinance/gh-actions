@@ -46,13 +46,13 @@ fi
 if [ ! -z "${INPUT_DOCKERFILE}" ]; then
   _build_params="$_build_params -f ${INPUT_DOCKERFILE}"
 fi
+
+
+docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY} <<< ${INPUT_PASSWORD}
 if [ ! -z "${INPUT_CACHE}" ]; then
   docker pull ${_docker_name}
   _build_params="$_build_params --cache-from ${_docker_name}"
 fi
-
-
-docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY} <<< ${INPUT_PASSWORD}
 docker build ${_build_params} -t ${_docker_name} .
 docker push ${_docker_name}
 if [[ "${_isMaster}" == "true" || "${_isTag}" == "true" ]]; then
