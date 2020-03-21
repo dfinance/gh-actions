@@ -9,6 +9,7 @@ set -e
 # INPUT_PASSWORD
 # INPUT_DOCKERFILE
 # INPUT_BUILD_PARAMS
+# INPUT_CACHE
 
 
 if [ -z "${INPUT_NAME}" ]; then
@@ -44,6 +45,11 @@ fi
 if [ ! -z "${INPUT_DOCKERFILE}" ]; then
   _build_params="$_build_params -f ${INPUT_DOCKERFILE}"
 fi
+if [ ! -z "${INPUT_CACHE}" ]; then
+  docker pull ${_docker_name}
+  _build_params="$_build_params --cache-from ${_docker_name}"
+fi
+
 
 docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY} <<< ${INPUT_PASSWORD}
 docker build ${_build_params} -t ${_docker_name} .
