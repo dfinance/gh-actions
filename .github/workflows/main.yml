@@ -25,6 +25,7 @@ jobs:
         name: ${REPOSITORY_PATH}
         username: ${{ secrets.DOCKERHUB_USER }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        dockerfile: gh.Dockerfile
         cache: true
 
     - name: Build and push docker image to github
@@ -35,7 +36,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
         registry: docker.pkg.github.com
-        # dockerfile: Dockerfile
+        dockerfile: gh.Dockerfile
 
     # - name: Build and push docker image to dockerhub
     #   run: |
