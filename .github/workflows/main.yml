@@ -19,6 +19,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Test publish to dockerhub
+      uses: ${REPOSITORY_PATH}@master
+      with:
+        name: ${REPOSITORY_PATH}
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        dockerfile: .build/Dockerfile
+        cache: true
+        # registry: docker.pkg.github.com
+
     - name: Build and push docker image to dockerhub
       run: |
         export BRANCH=$(sed -e 's/refs\/tags\///g; s/refs\/heads\///g;' <<< ${GITHUB_REF})
