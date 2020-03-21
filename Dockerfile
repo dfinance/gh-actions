@@ -1,11 +1,6 @@
 FROM docker:dind
 
-RUN apk --update --no-cache add \
-        curl \
-        wget \
-        bash \
-        gettext \
-        jq && \
+RUN apk --update --no-cache add bash sed && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /opt/app
