@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Test publish to dockerhub
-      uses: ${REPOSITORY_PATH}@master
+      uses: dfinance/gh-actions@master
       with:
         name: ${REPOSITORY_PATH}
         username: ${{ secrets.DOCKERHUB_USER }}
