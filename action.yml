@@ -1,0 +1,31 @@
+name: 'Build & Push'
+author: 'mrz1703'
+branding:
+  icon: 'zap'
+  color: 'red'
+description: 'Uses the git branch as the docker tag and pushes the container'
+inputs:
+  name:
+    description: 'The name of the image you would like to push'
+    required: true
+  username:
+    description: 'The login username for the registry'
+    required: true
+  password:
+    description: 'The login password for the registry'
+    required: true
+  registry:
+    description: 'Use registry for pushing to a custom registry'
+    required: false
+  dockerfile:
+    description: 'Use dockerfile when you would like to explicitly build a Dockerfile'
+    required: false
+  build_params:
+    description: 'Use build_params when you want to pass a list of environment variables or etc'
+    required: false
+  cache:
+    description: 'Use cache when you have big images, that you would only like to build partially'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
