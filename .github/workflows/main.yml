@@ -25,7 +25,7 @@ jobs:
         name: ${REPOSITORY_PATH}
         username: ${{ secrets.DOCKERHUB_USER }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
-        dockerfile: .build/Dockerfile
+        dockerfile: Dockerfile
         cache: true
         # registry: docker.pkg.github.com
 
@@ -34,7 +34,7 @@ jobs:
         export BRANCH=$(sed -e 's/refs\/tags\///g; s/refs\/heads\///g;' <<< ${GITHUB_REF})
 
         docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-        docker build -f ./.build/Dockerfile -t ${REPOSITORY_PATH}:${BRANCH} -t ${REPOSITORY_PATH}:latest .
+        docker build -f ./Dockerfile -t ${REPOSITORY_PATH}:${BRANCH} -t ${REPOSITORY_PATH}:latest .
         docker push ${REPOSITORY_PATH}:${BRANCH}
         docker push ${REPOSITORY_PATH}:latest
         docker logout
@@ -44,7 +44,7 @@ jobs:
         export BRANCH=$(sed -e 's/refs\/tags\///g; s/refs\/heads\///g;' <<< ${GITHUB_REF})
 
         docker login -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }} ${GITHUB_REGISTRY}
-        docker build -f ./.build/Dockerfile -t ${GITHUB_REPOSITORY_PATH}:${BRANCH} -t ${GITHUB_REPOSITORY_PATH}:latest .
+        docker build -f ./Dockerfile -t ${GITHUB_REPOSITORY_PATH}:${BRANCH} -t ${GITHUB_REPOSITORY_PATH}:latest .
         docker push ${GITHUB_REPOSITORY_PATH}:${BRANCH}
         docker push ${GITHUB_REPOSITORY_PATH}:latest
         docker logout
