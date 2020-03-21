@@ -7,10 +7,10 @@ on: [push, pull_request]
 #   pull_request:
 #     branches: [ master ]
 
-env:
-  GITHUB_REGISTRY: docker.pkg.github.com
-  GITHUB_REPOSITORY_PATH: docker.pkg.github.com/dfinance/gh-actions/gh-actions
-  REPOSITORY_PATH: dfinance/gh-actions
+# env:
+#   GITHUB_REGISTRY: docker.pkg.github.com
+#   GITHUB_REPOSITORY_PATH: 
+#   REPOSITORY_PATH: dfinance/gh-actions
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
     - name: Build and push docker image to dockerhub
       uses: dfinance/gh-actions@master
       with:
-        name: ${REPOSITORY_PATH}
+        name: dfinance/gh-actions
         username: ${{ secrets.DOCKERHUB_USER }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         dockerfile: gh.Dockerfile
@@ -31,7 +31,7 @@ jobs:
     - name: Build and push docker image to github
       uses: dfinance/gh-actions@master
       with:
-        name: ${GITHUB_REPOSITORY_PATH}
+        name: docker.pkg.github.com/dfinance/gh-actions/gh-actions
         username: ${{ secrets.DOCKERHUB_USER }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
