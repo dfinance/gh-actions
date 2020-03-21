@@ -32,8 +32,8 @@ jobs:
       uses: dfinance/gh-actions@master
       with:
         name: docker.pkg.github.com/dfinance/gh-actions/gh-actions
-        username: ${{ secrets.DOCKERHUB_USER }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        username: ${GITHUB_ACTOR}
+        password: ${{ secrets.GITHUB_TOKEN }}
         cache: true
         registry: docker.pkg.github.com
         dockerfile: gh.Dockerfile
