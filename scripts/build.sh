@@ -47,6 +47,7 @@ fi
 iprintf "Docker login"
 docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY} <<< ${INPUT_PASSWORD}
 
+set -x
 if [ ! -z "${INPUT_CACHE}" ]; then
   iprintf "Pull docker cache: ${_docker_name}"
   docker pull ${_docker_name}
@@ -63,6 +64,7 @@ if [[ "${_isMaster}" == "true" || "${_isTag}" == "true" ]]; then
   iprintf "Push docker image: ${INPUT_NAME}:latest"
   docker push ${INPUT_NAME}:latest
 fi
+set +x
 
 iprintf "Docker logout"
 docker logout
