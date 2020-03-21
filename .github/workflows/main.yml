@@ -21,6 +21,7 @@ jobs:
 
     - name: Test publish to dockerhub
       uses: dfinance/gh-actions@master
+      run: build.sh
       with:
         name: ${REPOSITORY_PATH}
         username: ${{ secrets.DOCKERHUB_USER }}
