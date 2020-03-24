@@ -52,7 +52,7 @@ docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY} <<< ${INPUT
 [[ "${INPUT_DEBUG}" == 'true' ]] && set -x
 if [ ! -z "${INPUT_CACHE}" ]; then
   iprintf "Pull docker cache: ${_docker_name}"
-  docker pull ${_docker_name}
+  # docker pull ${_docker_name}
   _build_params="$_build_params --cache-from ${_docker_name}"
 fi
 
