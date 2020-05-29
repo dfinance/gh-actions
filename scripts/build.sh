@@ -32,10 +32,10 @@ _branch=$(sed -e 's/refs\/tags\///g; s/refs\/heads\///g;' <<< ${GITHUB_REF})
 _docker_name="${INPUT_NAME}:${_branch}"
 _build_params="${INPUT_BUILD_PARAMS}"
 
-if [ "${_branch}" == "master" ]; then
-  _build_params="$_build_params -t ${INPUT_NAME}:latest"
-  _isMaster=true
-fi;
+# if [ "${_branch}" == "master" ]; then
+#   _build_params="$_build_params -t ${INPUT_NAME}:latest"
+#   _isMaster=true
+# fi;
 # if contains /refs/tags/
 if [ $(sed -e 's/refs\/tags\///g' <<< ${GITHUB_REF}) != ${GITHUB_REF} ]; then
   _build_params="$_build_params -t ${INPUT_NAME}:latest"
