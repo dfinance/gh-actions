@@ -63,8 +63,10 @@ iprintf "Push docker image: ${_docker_name}"
 docker push ${_docker_name}
 
 if [[ "${_isMaster}" == "true" || "${_isTag}" == "true" ]]; then
-  iprintf "Push docker image: ${INPUT_NAME}:latest"
-  docker push ${INPUT_NAME}:latest
+  if [[ "${_branch}" =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
+    iprintf "Push docker image: ${INPUT_NAME}:latest"
+    docker push ${INPUT_NAME}:latest
+  fi
 fi
 [[ "${INPUT_DEBUG}" == 'true' ]] && set +x
 
